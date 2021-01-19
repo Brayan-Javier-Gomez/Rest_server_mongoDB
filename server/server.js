@@ -1,60 +1,30 @@
+const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser');
-const app = express()
+const app = express();
+
 require('./config/config')
 
 //Sirve para reconocer las peticiones post.
 app.use(bodyParser.urlencoded({ extended: false }))
 
+
+
+
 // parse application/json
 app.use(bodyParser.json())
 
-//Peticiones GET (OBTENER DATOS)
-app.get('/usuario', function(req, res) {
-    res.json('get usuario')
-})
 
-//PETICIONES POST (RECIBIR DATOS)
+//CONEXION CON LA BASE DE DATOS
+app.use(require("./routes/usuarios"))
 
-app.post('/usuario', function(req, res) {
+mongoose.connect('mongodb://localhost:27017/cafe', { useNewUrlParser: true, useUnifiedTopology: true }, (err, resp) => {
 
-    let body = req.body
+    if (err) throw err
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            msg: "El nombre es necesario"
-        })
-    } else {
-        res.json({
-            persona: body
-        })
-    }
+    console.log('corriendo base de datos puerto 27017');
 
-
-
-
-
-})
-
-
-//PETICIONES PUT(ACTUALIZAR UN REGISTRO)
-
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id;
-
-    res.json({
-        id
-    })
-
-})
-
-
-//PETICIONES DELETE (ELIMINAR UN REGISTRO)
-
-app.delete('/usuario', function(req, res) {
-    res.json('delete usuario')
-})
+});
 
 
 //PUERTO USADO.
