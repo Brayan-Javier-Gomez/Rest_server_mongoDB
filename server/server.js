@@ -16,8 +16,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-//CONEXION CON LA BASE DE DATOS
-app.use(require("./routes/usuarios"))
+//CONEXION CON Los diferentes rutas
+
+app.use(require('./routes/index'))
 
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true }, (err, resp) => {
 

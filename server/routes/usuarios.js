@@ -3,10 +3,10 @@ const app = express();
 const Usuario = require('../models/usuario');
 const bcript = require('bcrypt');
 const _ = require('underscore');
-
+const { autenticaToken, autenticaRole } = require('../middlewares/autenticacion')
 
 //Peticiones GET (OBTENER DATOS)
-app.get('/usuario', function(req, res) {
+app.get('/usuario', [autenticaToken, autenticaRole], function(req, res) {
     //funcion de la base de datos para buscar un registro
     let desde = req.query.desde || 0;
     desde = Number(desde)
@@ -16,6 +16,12 @@ app.get('/usuario', function(req, res) {
     //es la funcion que se trae los registros segun la condicion
     Usuario.find({ estado: true })
 
+
+    /*
+    ====================================================================
+    Para mandar un parametro opcional se usa ? y para separar se usa &
+    ====================================================================
+    */
 
     //muestra los siguientes registros
 
@@ -48,7 +54,7 @@ app.get('/usuario', function(req, res) {
 })
 
 //PETICIONES POST (RECIBIR DATOS)
-
+// ,[autenticaToken, autenticaRole]
 app.post('/usuario', (req, res) => {
     let body = req.body
     let usuario = new Usuario({
@@ -77,7 +83,7 @@ app.post('/usuario', (req, res) => {
 
 //PETICIONES PUT(ACTUALIZAR UN REGISTRO)
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', autenticaToken, (req, res) => {
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role']);
     let id = req.params.id;
 
@@ -103,7 +109,7 @@ app.put('/usuario/:id', function(req, res) {
 
 //PETICIONES DELETE (ELIMINAR UN REGISTRO)
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [autenticaToken, autenticaRole], function(req, res) {
     let cambiarEstado = {
         estado: false
     }
