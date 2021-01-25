@@ -5,7 +5,19 @@ const bcript = require('bcrypt');
 const _ = require('underscore');
 const { autenticaToken, autenticaRole } = require('../middlewares/autenticacion')
 
-//Peticiones GET (OBTENER DATOS)
+
+app.get('/', (req, res) => {
+
+        res.json({
+            ok: true,
+            msg: {
+                msg: 'se ha cargado de forma correcta el servidor '
+            }
+        })
+
+
+    })
+    //Peticiones GET (OBTENER DATOS)
 app.get('/usuario', [autenticaToken, autenticaRole], function(req, res) {
     //funcion de la base de datos para buscar un registro
     let desde = req.query.desde || 0;
