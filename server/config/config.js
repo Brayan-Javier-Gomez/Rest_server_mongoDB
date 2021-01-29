@@ -49,3 +49,11 @@ Clave del token
 */
 
 process.env.SEED = process.env.SEED || 'clave_de_desarrollo';
+
+
+/*
+===============================
+Config del cliente de google
+===============================
+*/
+process.env.CLIENT_ID = process.env.CLIENT_ID || "629985935980-nvh2sq57cbq7kcbksoghhpu13vn6c8sr.apps.googleusercontent.com"
