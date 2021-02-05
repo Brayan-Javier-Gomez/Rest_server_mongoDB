@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { autenticaToken } = require('../middlewares/autenticacion');
+const { autenticaToken, autenticaRole } = require('../middlewares/autenticacion');
 
 const ModelCategoria = require('../models/categorias');
 
@@ -11,8 +11,8 @@ Obtener Todas las categorias
 ============================
 */
 app.get('/categoria', autenticaToken, (req, res) => {
-    console.log('peticion get');
     ModelCategoria.find({})
+        .populate('user')
         .exec((err, categorias) => {
             if (err) {
                 return res.status(400).json({
@@ -77,7 +77,8 @@ app.post('/categoria', autenticaToken, (req, res) => {
     let body = req.body;
     let categoria = new ModelCategoria({
         //objetos que se mandan a la base de datos
-        nombre: body.nombre
+        nombre: body.nombre,
+        user: req.usuario._id
     });
     categoria.save((err, categoriaDB) => {
         if (err) {
@@ -89,7 +90,8 @@ app.post('/categoria', autenticaToken, (req, res) => {
 
         res.json({
             ok: true,
-            categoria: categoriaDB
+            categoria: categoriaDB,
+
         })
 
 
@@ -107,10 +109,11 @@ Actualizar una categoria, se requiere el id
 app.put('/categoria/:id', autenticaToken, (req, res) => {
 
     let id = req.params.id;
+    let body = req.body;
 
 
 
-    ModelCategoria.findByIdAndUpdate(id, { new: true }, (err, categoriaDB) => {
+    ModelCategoria.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, categoriaDB) => {
 
         if (err) {
             return res.status(400).json({
@@ -138,8 +141,10 @@ Eliminar las categorias
 ============================
 */
 
-app.delete('/categoria/:id', autenticaToken, (req, res) => {
+app.delete('/categoria/:id', [autenticaToken, autenticaRole], (req, res) => {
     let id = req.params.id;
+
+
     ModelCategoria.findByIdAndRemove(id, (err, categoriaBorrada) => {
         if (err) {
             return res.status(400).json({
@@ -160,7 +165,8 @@ app.delete('/categoria/:id', autenticaToken, (req, res) => {
 
         res.json({
             ok: true,
-            categoria: categoriaBorrada
+            categoria: categoriaBorrada,
+            msg: 'La categoria fue borrada'
         })
 
 
