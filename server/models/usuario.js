@@ -57,6 +57,7 @@ usuarioSchema.methods.toJSON = function() {
         return userObjet;
     }
     //validacion con el unique de la repeticion del objeto
+
 usuarioSchema.plugin(uniqueValidator, { message: '{PATH} debe ser unico' })
 
 

@@ -65,7 +65,7 @@ app.get('/usuario', [autenticaToken, autenticaRole], function(req, res) {
     })
 })
 
-//PETICIONES POST (RECIBIR DATOS)
+//PETICIONES POST (ENVIAR DATOS)
 // ,[autenticaToken, autenticaRole]
 app.post('/usuario', (req, res) => {
     let body = req.body

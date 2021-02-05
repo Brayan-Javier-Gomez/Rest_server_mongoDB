@@ -29,7 +29,7 @@ app.use(express.static(path.resolve(__dirname, '../public')))
 
 //CONEXION CON Los diferentes rutas
 
-app.use(require('./routes/index'))
+app.use(require('./routes/index.js'));
 
 
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true }, (err, resp) => {
