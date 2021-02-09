@@ -26,6 +26,7 @@ let autenticaToken = (req, res, next) => {
         };
 
         req.usuario = decoded.usuario;
+        console.log(req.usuario);
         next();
     })
 

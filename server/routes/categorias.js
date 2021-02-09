@@ -10,14 +10,17 @@ const ModelCategoria = require('../models/categorias');
 Obtener Todas las categorias
 ============================
 */
-app.get('/categoria', autenticaToken, (req, res) => {
+// 
+app.get('/categoria', autenticaToken, function(req, res) {
     ModelCategoria.find({})
-        .populate('user')
+        //metodo para ordenar la lista    
+        .sort('nombre')
+        .populate('usuario', 'nombre email')
         .exec((err, categorias) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    err
+                    err: 'no se encuentra'
                 });
             }
 
@@ -44,6 +47,8 @@ app.get('/categoria/:id', autenticaToken, (req, res) => {
     let id = req.params.id;
 
     ModelCategoria.findById(id, (err, categoriaDB) => {
+
+
 
         if (err) {
             return res.status(400).json({
@@ -76,9 +81,8 @@ app.post('/categoria', autenticaToken, (req, res) => {
     //obtiene la entrada del usuario
     let body = req.body;
     let categoria = new ModelCategoria({
-        //objetos que se mandan a la base de datos
         nombre: body.nombre,
-        user: req.usuario._id
+        usuario: req.usuario._id,
     });
     categoria.save((err, categoriaDB) => {
         if (err) {

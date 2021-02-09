@@ -10,6 +10,8 @@ app.use(require("./usuarios"))
 
 app.use(require('./categorias'))
 
+app.use(require('./upload'))
+
 
 
 

@@ -8,12 +8,11 @@ const categoriaSchema = new Schema({
         type: String,
         required: [true, 'el nombre de la categoria es necesaria']
     },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-
+    usuario: { type: Schema.Types.ObjectId, ref: 'usuario' }
 })
 
 
 
 
 
-module.exports = mongoose.model('categoria', categoriaSchema);
+module.exports = mongoose.model('Categoria', categoriaSchema);
