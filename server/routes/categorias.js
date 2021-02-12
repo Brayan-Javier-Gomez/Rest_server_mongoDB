@@ -20,7 +20,7 @@ app.get('/categoria', autenticaToken, function(req, res) {
             if (err) {
                 return res.status(400).json({
                     ok: false,
-                    err: 'no se encuentra'
+                    err: 'Error desconocido'
                 });
             }
 

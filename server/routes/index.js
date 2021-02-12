@@ -12,6 +12,8 @@ app.use(require('./categorias'))
 
 app.use(require('./upload'))
 
+app.use(require('./productos'))
+
 
 
 
